@@ -1,0 +1,120 @@
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; height: 100%; }
+body { background: #05030c; font-family: system-ui, 'Noto Sans Thai', sans-serif; }
+
+.viewport { position: fixed; inset: 0; overflow: hidden; }
+.viewport[data-theme='led'] { background: radial-gradient(ellipse at 50% 50%, #241046 0%, #0f0724 70%, #07030f 100%); }
+.viewport[data-theme='fireworks'] { background: linear-gradient(180deg, #02030f 0%, #0a0a2c 55%, #2a1245 88%, #4a1a55 100%); }
+.stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 50% 50%; overflow: hidden; }
+
+/* ---------- LED text ---------- */
+.led-text {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.12em;
+  font-family: 'Fredoka', 'Noto Sans Thai', system-ui, sans-serif; font-weight: 600;
+}
+.led-line { display: flex; align-items: center; line-height: 1.05; letter-spacing: 8px; white-space: nowrap; }
+.led-gap { display: inline-block; width: 0.35em; }
+.led {
+  display: inline-block;
+  color: #3dff7a;
+  -webkit-text-fill-color: transparent;
+  background-image: radial-gradient(circle at center, currentColor 0, currentColor var(--dr), transparent calc(var(--dr) + 1px));
+  background-size: var(--dot) var(--dot);
+  background-position: calc(var(--dot) * 0.2) calc(var(--dot) * 0.2);
+  -webkit-background-clip: text; background-clip: text;
+  filter: drop-shadow(0 0 5px currentColor) drop-shadow(0 0 16px currentColor);
+}
+@keyframes ccA { 0% { color: #3dff7a } 25% { color: #fff } 50% { color: #ff3ea5 } 75% { color: #4df3ff } 100% { color: #3dff7a } }
+@keyframes ccB { 0% { color: #ffe14d } 33% { color: #ff3ea5 } 66% { color: #4df3ff } 100% { color: #ffe14d } }
+@keyframes ccFw { 0% { color: #ffe14d } 25% { color: #fff } 50% { color: #ff3ea5 } 75% { color: #4df3ff } 100% { color: #ffe14d } }
+.led.cc-a { animation: ccA 3.2s steps(1, end) infinite; }
+.led.cc-fw { animation: ccFw 3.2s steps(1, end) infinite; }
+.cc-b { animation: ccB 2.4s steps(1, end) infinite; }
+
+/* ---------- LED Board theme ---------- */
+.board-root { position: absolute; inset: 0; padding: 40px; }
+.board {
+  position: relative; width: 1840px; height: 1000px;
+  display: flex; align-items: center; justify-content: center;
+  border: 16px solid #070a2e; border-radius: 10px;
+  background: radial-gradient(ellipse at 50% 40%, #1531b8 0%, #0b1a7d 60%, #07104f 100%);
+  box-shadow: 0 0 0 4px #1c2a8f, 0 0 90px rgba(60, 90, 255, 0.5), inset 0 0 70px rgba(0, 0, 20, 0.7);
+}
+.board-chase { position: absolute; top: 0; left: 0; filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 12px currentColor); }
+@keyframes chase { to { stroke-dashoffset: -1; } }
+.chase { animation: chase 0.9s linear infinite; }
+
+/* ---------- Fireworks theme ---------- */
+.fw-root { position: absolute; inset: 0; }
+.fw-text { position: absolute; left: 0; top: 0; width: 1920px; height: 1000px; display: flex; align-items: center; justify-content: center; }
+.fw-text .led-text { filter: none; }
+.fw-glow { position: absolute; left: 0; right: 0; bottom: 0; height: 260px; background: radial-gradient(ellipse at 50% 100%, rgba(255, 80, 160, 0.35), transparent 70%); }
+.fw-skyline { position: absolute; left: 0; bottom: 0; width: 1920px; height: 170px; background: #05030c; }
+.star { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff; animation: tw 2.6s ease-in-out infinite; }
+@keyframes tw { 0%, 100% { opacity: 0.15 } 50% { opacity: 0.9 } }
+.burst { position: absolute; width: 0; height: 0; pointer-events: none; }
+.p {
+  position: absolute; left: 0; top: 0; width: 38px; height: 5px; margin-top: -2.5px; border-radius: 3px;
+  transform-origin: 0 50%; opacity: 0;
+  background: linear-gradient(90deg, transparent, var(--c)); box-shadow: 0 0 10px var(--c);
+  animation: pBurst 4.2s cubic-bezier(0.12, 0.7, 0.25, 1) infinite; animation-delay: var(--dl);
+}
+.p.sm { width: 24px; height: 4px; margin-top: -2px; }
+@keyframes pBurst {
+  0%, 28% { opacity: 0; transform: rotate(var(--a)) translateX(0) scaleX(0.3); }
+  30% { opacity: 1; }
+  72% { opacity: 1; transform: rotate(var(--a)) translateX(var(--d)) scaleX(1); }
+  100% { opacity: 0; transform: rotate(var(--a)) translateX(calc(var(--d) * 1.2)) scaleX(0.4); }
+}
+.rocket {
+  position: absolute; left: -3px; top: -35px; width: 6px; height: 70px; border-radius: 3px; opacity: 0;
+  background: linear-gradient(180deg, #fff, transparent); box-shadow: 0 0 12px #fff;
+  animation: rocket 4.2s ease-out infinite; animation-delay: var(--dl);
+}
+@keyframes rocket {
+  0% { opacity: 0; transform: translateY(var(--rise)); }
+  2% { opacity: 1; }
+  27% { opacity: 1; transform: translateY(0); }
+  29%, 100% { opacity: 0; transform: translateY(0); }
+}
+.flash { position: absolute; left: -320px; top: -320px; width: 640px; height: 640px; border-radius: 50%; opacity: 0; animation: flash 4.2s ease-out infinite; animation-delay: var(--dl); }
+@keyframes flash {
+  0%, 28% { opacity: 0; transform: scale(0.2); }
+  31% { opacity: 0.5; transform: scale(0.9); }
+  60%, 100% { opacity: 0; transform: scale(1.25); }
+}
+
+/* ---------- Control panel ---------- */
+.panel {
+  position: fixed; left: 16px; bottom: 16px; z-index: 10; width: 300px; padding: 14px;
+  display: flex; flex-direction: column; gap: 8px;
+  background: rgba(12, 10, 28, 0.88); color: #eee; border: 1px solid #3a3566; border-radius: 12px;
+  backdrop-filter: blur(6px); font-size: 14px;
+}
+.panel-head { display: flex; justify-content: space-between; align-items: center; }
+.panel label { font-size: 12px; color: #aab; margin-top: 4px; }
+.panel textarea {
+  width: 100%; resize: vertical; padding: 8px; border-radius: 8px; border: 1px solid #3a3566;
+  background: #0a0818; color: #fff; font: inherit; line-height: 1.4;
+}
+.panel input[type='range'] { width: 100%; }
+.panel button {
+  padding: 7px 10px; border-radius: 8px; border: 1px solid #3a3566; background: #1b1740; color: #fff; cursor: pointer; font: inherit;
+}
+.panel button:hover { background: #28225c; }
+.panel .seg { display: flex; gap: 6px; }
+.panel .seg button { flex: 1; }
+.panel .seg button.on { background: #4b3fd6; border-color: #7a6cff; }
+.panel .row { display: flex; gap: 8px; margin-top: 4px; }
+.panel .row button { flex: 1; }
+.panel small { color: #889; }
+.panel-open {
+  position: fixed; left: 16px; bottom: 16px; z-index: 10; width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid #3a3566; background: rgba(12, 10, 28, 0.8); color: #fff; font-size: 20px; cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .led, .cc-b, .chase, .p, .rocket, .flash, .star { animation: none !important; }
+  .star { opacity: 0.6; }
+}
