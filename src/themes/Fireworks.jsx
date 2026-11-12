@@ -1,7 +1,7 @@
 import LedText from '../LedText.jsx'
 import { fontSizeFor } from '../lib.js'
 
-const COLORS = ['#ff3ea5', '#ffe14d', '#4df3ff', '#b6ff5c', '#ff8a3d', '#c18cff']
+const COLORS = ['#ff1fa0', '#ffee00', '#00eaff', '#7dff1a', '#ff6a00', '#b04dff']
 const BURSTS = [
   [240, 240, 0], [960, 150, 1], [1680, 260, 2], [150, 650, 3], [1770, 670, 4],
   [620, 110, 5], [1320, 100, 0], [430, 520, 2], [1500, 540, 1],
