@@ -17,6 +17,7 @@ npm run dev
 ## Controls
 - Text box: 1 line = 1 row of the sign
 - Theme buttons, font size slider (40-130%)
+- Big touch-friendly controls (shadcn/ui), **Lock** button: hides the panel and blocks all touches; long-press the lock icon (bottom-left, 1.5s) to unlock
 - `F` fullscreen, `H` hide/show the panel
 - Settings are saved in the browser (localStorage)
 - The 1920x1080 stage scales to fit any screen automatically

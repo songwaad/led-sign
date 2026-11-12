@@ -1,9 +1,25 @@
-* { box-sizing: border-box; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* shadcn/ui design tokens (zinc, dark) */
+:root {
+  --background: 240 10% 3.9%; --foreground: 0 0% 98%;
+  --card: 240 10% 5.9%; --card-foreground: 0 0% 98%;
+  --primary: 0 0% 98%; --primary-foreground: 240 5.9% 10%;
+  --secondary: 240 3.7% 15.9%; --secondary-foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%; --muted-foreground: 240 5% 64.9%;
+  --accent: 240 3.7% 15.9%; --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%; --destructive-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%; --input: 240 3.7% 15.9%; --ring: 240 4.9% 83.9%;
+  --radius: 0.75rem;
+}
+
 html, body, #root { margin: 0; height: 100%; }
-body { background: #05030c; font-family: system-ui, 'Noto Sans Thai', sans-serif; }
+body { background: #05030c; font-family: system-ui, 'Noto Sans Thai', sans-serif; overscroll-behavior: none; overflow: hidden; -webkit-tap-highlight-color: transparent; }
 
 .viewport { position: fixed; inset: 0; overflow: hidden; }
-.viewport[data-theme='led'] { background: radial-gradient(ellipse at 50% 50%, #241046 0%, #0f0724 70%, #07030f 100%); }
+.viewport[data-theme='led'] { background: radial-gradient(ellipse at 50% 50%, #3a1a7a 0%, #1a0b45 70%, #0a0420 100%); }
 .viewport[data-theme='fireworks'] { background: linear-gradient(180deg, #02030f 0%, #0a0a2c 55%, #2a1245 88%, #4a1a55 100%); }
 .stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 50% 50%; overflow: hidden; }
 
@@ -17,17 +33,17 @@ body { background: #05030c; font-family: system-ui, 'Noto Sans Thai', sans-serif
 .led-gap { display: inline-block; width: 0.35em; }
 .led {
   display: inline-block;
-  color: #3dff7a;
+  color: #00ff66;
   -webkit-text-fill-color: transparent;
   background-image: radial-gradient(circle at center, currentColor 0, currentColor var(--dr), transparent calc(var(--dr) + 1px));
   background-size: var(--dot) var(--dot);
   background-position: calc(var(--dot) * 0.2) calc(var(--dot) * 0.2);
   -webkit-background-clip: text; background-clip: text;
-  filter: drop-shadow(0 0 5px currentColor) drop-shadow(0 0 16px currentColor);
+  filter: saturate(1.4) drop-shadow(0 0 6px currentColor) drop-shadow(0 0 22px currentColor);
 }
-@keyframes ccA { 0% { color: #3dff7a } 25% { color: #fff } 50% { color: #ff3ea5 } 75% { color: #4df3ff } 100% { color: #3dff7a } }
-@keyframes ccB { 0% { color: #ffe14d } 33% { color: #ff3ea5 } 66% { color: #4df3ff } 100% { color: #ffe14d } }
-@keyframes ccFw { 0% { color: #ffe14d } 25% { color: #fff } 50% { color: #ff3ea5 } 75% { color: #4df3ff } 100% { color: #ffe14d } }
+@keyframes ccA { 0% { color: #00ff66 } 25% { color: #fff25c } 50% { color: #ff1fa0 } 75% { color: #00eaff } 100% { color: #00ff66 } }
+@keyframes ccB { 0% { color: #ffee00 } 33% { color: #ff1fa0 } 66% { color: #00eaff } 100% { color: #ffee00 } }
+@keyframes ccFw { 0% { color: #ffee00 } 25% { color: #ff7a00 } 50% { color: #ff1fa0 } 75% { color: #00eaff } 100% { color: #ffee00 } }
 .led.cc-a { animation: ccA 3.2s steps(1, end) infinite; }
 .led.cc-fw { animation: ccFw 3.2s steps(1, end) infinite; }
 .cc-b { animation: ccB 2.4s steps(1, end) infinite; }
@@ -38,8 +54,8 @@ body { background: #05030c; font-family: system-ui, 'Noto Sans Thai', sans-serif
   position: relative; width: 1840px; height: 1000px;
   display: flex; align-items: center; justify-content: center;
   border: 16px solid #070a2e; border-radius: 10px;
-  background: radial-gradient(ellipse at 50% 40%, #1531b8 0%, #0b1a7d 60%, #07104f 100%);
-  box-shadow: 0 0 0 4px #1c2a8f, 0 0 90px rgba(60, 90, 255, 0.5), inset 0 0 70px rgba(0, 0, 20, 0.7);
+  background: radial-gradient(ellipse at 50% 40%, #2a4dff 0%, #1230d6 60%, #0a1a8f 100%);
+  box-shadow: 0 0 0 4px #1c2a8f, 0 0 110px rgba(70, 110, 255, 0.8), inset 0 0 70px rgba(0, 0, 20, 0.7);
 }
 .board-chase { position: absolute; top: 0; left: 0; filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 12px currentColor); }
 @keyframes chase { to { stroke-dashoffset: -1; } }
@@ -49,7 +65,7 @@ body { background: #05030c; font-family: system-ui, 'Noto Sans Thai', sans-serif
 .fw-root { position: absolute; inset: 0; }
 .fw-text { position: absolute; left: 0; top: 0; width: 1920px; height: 1000px; display: flex; align-items: center; justify-content: center; }
 .fw-text .led-text { filter: none; }
-.fw-glow { position: absolute; left: 0; right: 0; bottom: 0; height: 260px; background: radial-gradient(ellipse at 50% 100%, rgba(255, 80, 160, 0.35), transparent 70%); }
+.fw-glow { position: absolute; left: 0; right: 0; bottom: 0; height: 260px; background: radial-gradient(ellipse at 50% 100%, rgba(255, 40, 150, 0.55), transparent 70%); }
 .fw-skyline { position: absolute; left: 0; bottom: 0; width: 1920px; height: 170px; background: #05030c; }
 .star { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff; animation: tw 2.6s ease-in-out infinite; }
 @keyframes tw { 0%, 100% { opacity: 0.15 } 50% { opacity: 0.9 } }
@@ -83,35 +99,6 @@ body { background: #05030c; font-family: system-ui, 'Noto Sans Thai', sans-serif
   0%, 28% { opacity: 0; transform: scale(0.2); }
   31% { opacity: 0.5; transform: scale(0.9); }
   60%, 100% { opacity: 0; transform: scale(1.25); }
-}
-
-/* ---------- Control panel ---------- */
-.panel {
-  position: fixed; left: 16px; bottom: 16px; z-index: 10; width: 300px; padding: 14px;
-  display: flex; flex-direction: column; gap: 8px;
-  background: rgba(12, 10, 28, 0.88); color: #eee; border: 1px solid #3a3566; border-radius: 12px;
-  backdrop-filter: blur(6px); font-size: 14px;
-}
-.panel-head { display: flex; justify-content: space-between; align-items: center; }
-.panel label { font-size: 12px; color: #aab; margin-top: 4px; }
-.panel textarea {
-  width: 100%; resize: vertical; padding: 8px; border-radius: 8px; border: 1px solid #3a3566;
-  background: #0a0818; color: #fff; font: inherit; line-height: 1.4;
-}
-.panel input[type='range'] { width: 100%; }
-.panel button {
-  padding: 7px 10px; border-radius: 8px; border: 1px solid #3a3566; background: #1b1740; color: #fff; cursor: pointer; font: inherit;
-}
-.panel button:hover { background: #28225c; }
-.panel .seg { display: flex; gap: 6px; }
-.panel .seg button { flex: 1; }
-.panel .seg button.on { background: #4b3fd6; border-color: #7a6cff; }
-.panel .row { display: flex; gap: 8px; margin-top: 4px; }
-.panel .row button { flex: 1; }
-.panel small { color: #889; }
-.panel-open {
-  position: fixed; left: 16px; bottom: 16px; z-index: 10; width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid #3a3566; background: rgba(12, 10, 28, 0.8); color: #fff; font-size: 20px; cursor: pointer;
 }
 
 @media (prefers-reduced-motion: reduce) {
