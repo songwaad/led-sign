@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Lock, Maximize, RotateCcw, Settings2, X } from 'lucide-react'
 import LedBoard from './themes/LedBoard.jsx'
 import Fireworks from './themes/Fireworks.jsx'
+import { PALETTES } from './palettes.js'
+import Scene from './themes/Scene.jsx'
 import LockOverlay from './components/LockOverlay.jsx'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -11,14 +13,24 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 const THEMES = {
   led: { label: 'LED Board', Component: LedBoard },
   fireworks: { label: 'Fireworks', Component: Fireworks },
+  neon: { label: 'Neon Diner' },
+  casino: { label: 'Casino' },
+  billboard: { label: 'Billboard' },
+  matrix: { label: 'Matrix' },
+  aurora: { label: 'Aurora' },
+  synthwave: { label: 'Synthwave' },
+  starfield: { label: 'Warp Stars' },
+  bubbles: { label: 'Underwater' },
+  snow: { label: 'Snowfall' },
+  amber: { label: 'Amber' },
 }
-const DEFAULTS = { text: 'AI-ASSISTED\nCONTAINER\nINSPECTION', theme: 'led', size: 100 }
+const DEFAULTS = { text: 'AI-ASSISTED\nCONTAINER\nINSPECTION', theme: 'led', palette: 'rainbow', size: 100 }
 const KEY = 'led-sign-settings'
 
 function load() {
   try {
     const saved = JSON.parse(localStorage.getItem(KEY) || '{}')
-    return { ...DEFAULTS, ...saved, theme: THEMES[saved.theme] ? saved.theme : DEFAULTS.theme }
+    return { ...DEFAULTS, ...saved, theme: THEMES[saved.theme] ? saved.theme : DEFAULTS.theme, palette: PALETTES[saved.palette] ? saved.palette : DEFAULTS.palette }
   } catch {
     return DEFAULTS
   }
@@ -66,6 +78,7 @@ export default function App() {
   const scale = Math.min(vp.w / 1920, vp.h / 1080)
   const lines = s.text.split('\n').map((l) => l.trim()).filter(Boolean)
   const { Component } = THEMES[s.theme]
+  const shown = lines.length ? lines : ['']
   const set = (patch) => setS((prev) => ({ ...prev, ...patch }))
 
   const lockScreen = () => {
@@ -76,9 +89,9 @@ export default function App() {
 
   return (
     <>
-      <div className="viewport" data-theme={s.theme}>
+      <div className="viewport" data-theme={s.theme} style={paletteVars(s.palette)}>
         <div className="stage" style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
-          <Component lines={lines.length ? lines : ['']} size={s.size} />
+          {Component ? <Component lines={shown} size={s.size} /> : <Scene id={s.theme} lines={shown} size={s.size} />}
         </div>
       </div>
 
@@ -103,9 +116,9 @@ export default function App() {
               <div className="space-y-5">
                 <div className="space-y-2">
                   <p className="text-sm text-muted-foreground">ธีม</p>
-                  <ToggleGroup type="single" value={s.theme} onValueChange={(v) => v && set({ theme: v })}>
+                  <ToggleGroup type="single" className="flex-wrap" value={s.theme} onValueChange={(v) => v && set({ theme: v })}>
                     {Object.entries(THEMES).map(([id, t]) => (
-                      <ToggleGroupItem key={id} value={id}>{t.label}</ToggleGroupItem>
+                      <ToggleGroupItem key={id} value={id} className="h-10 flex-none px-3">{t.label}</ToggleGroupItem>
                     ))}
                   </ToggleGroup>
                 </div>
@@ -135,6 +148,11 @@ export default function App() {
       ))}
     </>
   )
+}
+
+function paletteVars(id) {
+  const c = PALETTES[id].colors
+  return { '--c1': c[0], '--c2': c[1], '--c3': c[2], '--c4': c[3] }
 }
 
 function toggleFullscreen() {

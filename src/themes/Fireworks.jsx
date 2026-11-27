@@ -1,13 +1,13 @@
 import LedText from '../LedText.jsx'
 import { fontSizeFor } from '../lib.js'
 
-const COLORS = ['#ff1fa0', '#ffee00', '#00eaff', '#7dff1a', '#ff6a00', '#b04dff']
+const COLORS = ['var(--c1)', 'var(--c2)', 'var(--c3)', 'var(--c4)']
 const BURSTS = [
   [240, 240, 0], [960, 150, 1], [1680, 260, 2], [150, 650, 3], [1770, 670, 4],
   [620, 110, 5], [1320, 100, 0], [430, 520, 2], [1500, 540, 1],
 ].map(([x, y, ci], bi) => {
-  const c1 = COLORS[ci % 6]
-  const c2 = COLORS[(ci + 2) % 6]
+  const c1 = COLORS[ci % 4]
+  const c2 = COLORS[(ci + 2) % 4]
   const outer = Array.from({ length: 28 }, (_, k) => ({ a: (k * 360) / 28, d: 300 + (k % 2) * 50, c: c1, sm: false }))
   const inner = Array.from({ length: 18 }, (_, k) => ({ a: (k * 360) / 18 + 10, d: 165, c: c2, sm: true }))
   return { x, y, c1, delay: -(bi * 0.47), rise: 1080 - y + 120, parts: [...outer, ...inner] }
@@ -42,7 +42,7 @@ export default function Fireworks({ lines, size }) {
       <div className="fw-glow" />
       <div className="fw-skyline" style={{ clipPath: SKYLINE }} />
       <div className="fw-text">
-        <LedText lines={lines} fontSize={fontSize} palette="fw" />
+        <LedText lines={lines} fontSize={fontSize} />
       </div>
     </div>
   )

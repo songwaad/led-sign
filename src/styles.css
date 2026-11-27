@@ -41,12 +41,9 @@ body { background: #05030c; font-family: system-ui, 'Noto Sans Thai', sans-serif
   -webkit-background-clip: text; background-clip: text;
   filter: saturate(1.4) drop-shadow(0 0 6px currentColor) drop-shadow(0 0 22px currentColor);
 }
-@keyframes ccA { 0% { color: #00ff66 } 25% { color: #fff25c } 50% { color: #ff1fa0 } 75% { color: #00eaff } 100% { color: #00ff66 } }
-@keyframes ccB { 0% { color: #ffee00 } 33% { color: #ff1fa0 } 66% { color: #00eaff } 100% { color: #ffee00 } }
-@keyframes ccFw { 0% { color: #ffee00 } 25% { color: #ff7a00 } 50% { color: #ff1fa0 } 75% { color: #00eaff } 100% { color: #ffee00 } }
-.led.cc-a { animation: ccA 3.2s steps(1, end) infinite; }
-.led.cc-fw { animation: ccFw 3.2s steps(1, end) infinite; }
-.cc-b { animation: ccB 2.4s steps(1, end) infinite; }
+@keyframes cc { 0% { color: var(--c1) } 25% { color: var(--c2) } 50% { color: var(--c3) } 75% { color: var(--c4) } 100% { color: var(--c1) } }
+.led { animation: cc 3.2s steps(1, end) infinite; }
+.cc-b { animation: cc 2.4s steps(1, end) infinite; }
 
 /* ---------- LED Board theme ---------- */
 .board-root { position: absolute; inset: 0; padding: 40px; }
