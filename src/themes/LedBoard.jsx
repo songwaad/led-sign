@@ -10,7 +10,7 @@ export default function LedBoard({ lines, size }) {
           <rect className="chase" x="28" y="28" width="1752" height="912" rx="16" fill="none" stroke="currentColor"
             strokeWidth="9" strokeLinecap="round" pathLength="250" strokeDasharray="0 1" />
         </svg>
-        <LedText lines={lines} fontSize={fontSize} palette="a" />
+        <LedText lines={lines} fontSize={fontSize} />
       </div>
     </div>
   )
